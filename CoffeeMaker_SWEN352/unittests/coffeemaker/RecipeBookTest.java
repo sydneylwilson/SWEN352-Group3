@@ -34,7 +34,15 @@ class RecipeBookTest {
 
 	@Test
 	void testEditRecipe() {
-		fail("Not yet implemented");
+		// test the editRecipe method
+		RecipeBook rb = new RecipeBook();
+		Recipe r = new Recipe();
+		r.setName("Coffee");
+		rb.addRecipe(r);
+		Recipe r2 = new Recipe();
+		r2.setName("Coffee2");
+		rb.editRecipe(0, r2);
+		assertEquals("Coffee2", rb.getRecipes()[0].getName());
 	}
 
 }

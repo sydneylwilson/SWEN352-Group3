@@ -70,7 +70,14 @@ class InventoryTest {
 
 	@Test
 	void testAddSugar() {
-		fail("Not yet implemented");
+		// test the add sugar method
+		Inventory inv = new Inventory();
+		try {
+			inv.addSugar("5");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(20, inv.getSugar());
 	}
 
 	@Test
