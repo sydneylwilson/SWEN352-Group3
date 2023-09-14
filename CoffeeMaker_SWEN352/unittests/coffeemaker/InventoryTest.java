@@ -3,69 +3,104 @@ package coffeemaker;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 
+import coffeemaker.exceptions.InventoryException;
 import coffeemaker.exceptions.RecipeException;
 
 class InventoryTest {
+	
+//	public ExpectedException exception = ExpectedException.none();
 
 	@Test
 	void testInventory() {
-		fail("Not yet implemented");
+		Inventory inv = new Inventory();
+		assertNotNull(inv);
 	}
 
 	@Test
 	void testGetChocolate() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		assertEquals(15, i.getChocolate());
 	}
 
 	@Test
 	void testSetChocolate() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		i.setChocolate(20);
+		assertEquals(20, i.getChocolate());
 	}
 
 	@Test
-	void testAddChocolate() {
-		fail("Not yet implemented");
+	void testAddChocolate() throws InventoryException {
+		Inventory i = new Inventory();
+		i.addChocolate("5");
+		assertEquals(20, i.getChocolate());
+	}
+	
+	@Test
+	void testAddChocolateException(){
+		String error = "";
+		Inventory i = new Inventory();
+		try {
+			i.addChocolate("-1");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of chocolate must be a positive integer", error);
 	}
 
 	@Test
 	void testGetCoffee() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		assertEquals(15, i.getCoffee());
 	}
 
 	@Test
 	void testSetCoffee() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		i.setCoffee(20);
+		assertEquals(20, i.getCoffee());
 	}
 
 	@Test
-	void testAddCoffee() {
-		fail("Not yet implemented");
+	void testAddCoffee() throws InventoryException {
+		Inventory i = new Inventory();
+		i.addCoffee("5");
+		assertEquals(20, i.getCoffee());
 	}
 
 	@Test
 	void testGetMilk() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		assertEquals(15, i.getMilk());
 	}
 
 	@Test
 	void testSetMilk() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		i.setMilk(20);
+		assertEquals(20, i.getMilk());
 	}
 
 	@Test
-	void testAddMilk() {
-		fail("Not yet implemented");
+	void testAddMilk() throws InventoryException {
+		Inventory i = new Inventory();
+		i.addMilk("5");
+		assertEquals(20, i.getMilk());
 	}
 
 	@Test
 	void testGetSugar() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		assertEquals(15, i.getSugar());
 	}
 
 	@Test
 	void testSetSugar() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		i.setSugar(20);
+		assertEquals(20, i.getSugar());
 	}
 
 	@Test
@@ -82,7 +117,17 @@ class InventoryTest {
 
 	@Test
 	void testEnoughIngredients() {
-		fail("Not yet implemented");
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtChocolate("10");
+			r.setAmtCoffee("10");
+			r.setAmtMilk("10");
+			r.setAmtSugar("10");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertTrue(inv.enoughIngredients(r));
 	}
 
 	@Test
@@ -104,10 +149,58 @@ class InventoryTest {
 		assertEquals(10, inv.getMilk());
 		assertEquals(10, inv.getSugar());
 	}
+	
+	@Test
+	void testUseIngredientsFails() {
+		// test the useIngredients method
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtChocolate("25");
+			r.setAmtCoffee("25");
+			r.setAmtMilk("25");
+			r.setAmtSugar("25");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertFalse(inv.useIngredients(r));
+	}
+	
+	@Test
+	void testNotEnoughIngredients() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtChocolate("20");
+			r.setAmtCoffee("20");
+			r.setAmtMilk("20");
+			r.setAmtSugar("20");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+//		boolean x = inv.enoughIngredients(r);
+		assertFalse(inv.enoughIngredients(r));
+	}
 
 	@Test
 	void testToString() {
-		fail("Not yet implemented");
+		Inventory i = new Inventory();
+		
+		StringBuffer buf = new StringBuffer();
+		buf.append("Coffee: ");
+    	buf.append("15");
+    	buf.append("\n");
+    	buf.append("Milk: ");
+    	buf.append("15");
+    	buf.append("\n");
+    	buf.append("Sugar: ");
+    	buf.append("15");
+    	buf.append("\n");
+    	buf.append("Chocolate: ");
+    	buf.append("15");
+    	buf.append("\n");
+    	
+		assertEquals(i.toString(), buf);
 	}
 
 }
