@@ -3,8 +3,6 @@ package coffeemaker;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
-
 import coffeemaker.exceptions.InventoryException;
 import coffeemaker.exceptions.RecipeException;
 
@@ -30,6 +28,13 @@ class InventoryTest {
 		i.setChocolate(20);
 		assertEquals(20, i.getChocolate());
 	}
+	
+	@Test
+	void testSetNegativeChocolate() {
+		Inventory i = new Inventory();
+		i.setChocolate(-1);
+		assertEquals(15, i.getChocolate());
+	}
 
 	@Test
 	void testAddChocolate() throws InventoryException {
@@ -37,6 +42,7 @@ class InventoryTest {
 		i.addChocolate("5");
 		assertEquals(20, i.getChocolate());
 	}
+
 	
 	@Test
 	void testAddChocolateException(){
@@ -62,6 +68,13 @@ class InventoryTest {
 		i.setCoffee(20);
 		assertEquals(20, i.getCoffee());
 	}
+	
+	@Test
+	void testSetNegativeCoffee() {
+		Inventory i = new Inventory();
+		i.setCoffee(-1);
+		assertEquals(15, i.getCoffee());
+	}
 
 	@Test
 	void testAddCoffee() throws InventoryException {
@@ -81,6 +94,13 @@ class InventoryTest {
 		Inventory i = new Inventory();
 		i.setMilk(20);
 		assertEquals(20, i.getMilk());
+	}
+	
+	@Test
+	void testSetNegativeMilk() {
+		Inventory i = new Inventory();
+		i.setMilk(-1);
+		assertEquals(15, i.getMilk());
 	}
 
 	@Test
@@ -102,17 +122,20 @@ class InventoryTest {
 		i.setSugar(20);
 		assertEquals(20, i.getSugar());
 	}
+	
+	@Test
+	void testSetNegativeSugar() {
+		Inventory i = new Inventory();
+		i.setSugar(-1);
+		assertEquals(15, i.getSugar());
+	}
 
 	@Test
-	void testAddSugar() {
+	void testAddSugar() throws InventoryException {
 		// test the add sugar method
-		Inventory inv = new Inventory();
-		try {
-			inv.addSugar("5");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		assertEquals(20, inv.getSugar());
+		Inventory i = new Inventory();
+		i.addSugar("5");
+		assertEquals(20, i.getSugar());
 	}
 
 	@Test
@@ -200,7 +223,7 @@ class InventoryTest {
     	buf.append("15");
     	buf.append("\n");
     	
-		assertEquals(i.toString(), buf);
+		assertEquals(i.toString(), buf.toString());
 	}
 
 
@@ -310,6 +333,6 @@ class InventoryTest {
 		buf.append("Chocolate: ");
 		buf.append("N/A");
 		buf.append("\n");
-		assertEquals(i.toString(), buf);
+		assertEquals(i.toString(), buf.toString());
 	}
 }
