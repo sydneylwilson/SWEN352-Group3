@@ -335,4 +335,182 @@ class InventoryTest {
 		buf.append("\n");
 		assertNotEquals(i.toString(), buf.toString());
 	}
+
+	/** More for step 5 */
+
+	@Test
+	public void testInventoryCoffee() {
+		Inventory inv = new Inventory();
+		assertEquals(15, inv.getChocolate());
+	}
+
+	@Test
+	public void testInventoryMilk() {
+		Inventory inv = new Inventory();
+		assertEquals(15, inv.getMilk());
+	}
+
+	@Test
+	public void testInventorySugar() {
+		Inventory inv = new Inventory();
+		assertEquals(15, inv.getSugar());
+	}
+
+	@Test
+	public void testInventoryChocolate() {
+		Inventory inv = new Inventory();
+		assertEquals(15, inv.getChocolate());
+	}
+
+	@Test
+	public void testInventorySetCoffee() {
+		Inventory inv = new Inventory();
+		inv.setCoffee(20);
+		assertEquals(20, inv.getCoffee());
+	}
+
+	@Test
+	public void testInventorySetMilk() {
+		Inventory inv = new Inventory();
+		inv.setMilk(20);
+		assertEquals(20, inv.getMilk());
+	}
+
+	@Test
+	public void testInventorySetSugar() {
+		Inventory inv = new Inventory();
+		inv.setSugar(20);
+		assertEquals(20, inv.getSugar());
+	}
+
+	@Test
+	public void testInventorySetChocolate() {
+		Inventory inv = new Inventory();
+		inv.setChocolate(20);
+		assertEquals(20, inv.getChocolate());
+	}
+
+	@Test
+	public void testInventoryAddCoffee() throws InventoryException {
+		Inventory inv = new Inventory();
+		inv.addCoffee("5");
+		assertEquals(20, inv.getCoffee());
+	}
+
+	@Test
+	public void testInventoryAddMilk() throws InventoryException {
+		Inventory inv = new Inventory();
+		inv.addMilk("5");
+		assertEquals(20, inv.getMilk());
+	}
+
+	@Test
+	public void testInventoryAddSugar() throws InventoryException {
+		Inventory inv = new Inventory();
+		inv.addSugar("5");
+		assertEquals(20, inv.getSugar());
+	}
+
+	@Test
+	public void testInventoryAddChocolate() throws InventoryException {
+		Inventory inv = new Inventory();
+		inv.addChocolate("5");
+		assertEquals(20, inv.getChocolate());
+	}
+
+	@Test
+	public void testEnoughIngredientsCoffee() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtCoffee("10");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertTrue(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsMilk() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtMilk("10");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertTrue(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsSugar() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtSugar("10");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertTrue(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsChocolate() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtChocolate("10");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertTrue(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsCoffeeFail() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtCoffee("20");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertFalse(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsMilkFail() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtMilk("20");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertFalse(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsSugarFail() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtSugar("20");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertFalse(inv.enoughIngredients(r));
+	}
+
+	@Test
+	public void testEnoughIngredientsChocolateFail() {
+		Inventory inv = new Inventory();
+		Recipe r = new Recipe();
+		try {
+			r.setAmtChocolate("20");
+		} catch (RecipeException e) {
+			e.printStackTrace();
+		}
+		assertFalse(inv.enoughIngredients(r));
+	}
 }
