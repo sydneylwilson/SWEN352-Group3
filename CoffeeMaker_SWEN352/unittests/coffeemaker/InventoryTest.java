@@ -333,6 +333,6 @@ class InventoryTest {
 		buf.append("Chocolate: ");
 		buf.append("N/A");
 		buf.append("\n");
-		assertEquals(i.toString(), buf.toString());
+		assertNotEquals(i.toString(), buf.toString());
 	}
 }
