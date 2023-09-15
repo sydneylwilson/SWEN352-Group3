@@ -203,4 +203,113 @@ class InventoryTest {
 		assertEquals(i.toString(), buf);
 	}
 
+
+	/** EXCEPTIONS */
+
+	@Test
+	void testAddChocolateException2() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addChocolate("a");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of chocolate must be a positive integer", error);
+	}
+
+	@Test
+	void testAddCoffeeException() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addCoffee("a");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of coffee must be a positive integer", error);
+	}
+
+	@Test
+	void testAddCoffeeException2() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addCoffee("-1");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of coffee must be a positive integer", error);
+	}
+
+	@Test
+	void testAddMilkException() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addMilk("a");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of milk must be a positive integer", error);
+	}
+
+	@Test
+	void testAddMilkException2() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addMilk("-1");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of milk must be a positive integer", error);
+	}
+
+	@Test
+	void testAddSugarException() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addSugar("a");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of sugar must be a positive integer", error);
+	}
+
+	@Test
+	void testAddSugarException2() {
+		Inventory i = new Inventory();
+		String error = "";
+		try {
+			i.addSugar("-1");
+		} catch (InventoryException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Units of sugar must be a positive integer", error);
+	}
+
+	@Test
+	void testToStringException() {
+		Inventory i = new Inventory();
+		i.setChocolate(-1);
+		i.setCoffee(-1);
+		i.setMilk(-1);
+		i.setSugar(-1);
+		StringBuffer buf = new StringBuffer();
+		buf.append("Coffee: ");
+		buf.append("N/A");
+		buf.append("\n");
+		buf.append("Milk: ");
+		buf.append("N/A");
+		buf.append("\n");
+		buf.append("Sugar: ");
+		buf.append("N/A");
+		buf.append("\n");
+		buf.append("Chocolate: ");
+		buf.append("N/A");
+		buf.append("\n");
+		assertEquals(i.toString(), buf);
+	}
 }
