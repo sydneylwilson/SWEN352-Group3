@@ -49,13 +49,23 @@ class TestLibrary( unittest.TestCase ):
         self.assertNotEqual(self.lib.get_ebooks_count('learning python'), 5)
     
     
-    def test_is_book_by_author_true(self):
+    # def test_is_book_by_author_true(self):
+    #     """
+    #     Test method for is_book_by_author and getting a true.
+    #     """
+    #     self.lib.api.get_ebooks = Mock(return_value=self.books_data)
+    #     self.assertTrue(self.lib.is_book_by_author('Wei-Meng Lee', 'Python Machine Learning'))
+    
+    def test_book_by_author_true(self):
         """
         Test method for is_book_by_author and getting a true.
         """
-        self.lib.api.get_ebooks = Mock(return_value=self.books_data)
-        self.assertTrue(self.lib.is_book_by_author('Mark Lutz', 'learning python'))
-        
+        book = Mock()
+        book.get_title = Mock(return_value='learning python')
+        book.get_author = Mock(return_value='Mark Lutz')
+        self.lib.api.get_ebooks = Mock(return_value=book)
+        self.assertTrue(self.lib.is_book_by_author('Mark Lutz', 'Learning Python'))
+    
     def test_is_book_by_author_false(self):
         """
         Test method for is_book_by_author and getting a false.
@@ -114,6 +124,15 @@ class TestLibrary( unittest.TestCase ):
         patron = Mock()
         self.lib.db.retrieve_patron = Mock(return_value=patron)
         self.lib.db.update_patron = Mock(return_value=False)
+        self.assertIsNone(self.lib.borrow_book('learning python', patron))
+        
+    def test_borrow_book( self ):
+        """
+        Test method for borrow_book and getting a correct set.
+        """
+        patron = Mock()
+        self.lib.db.retrieve_patron = Mock(return_value=patron)
+        self.lib.db.update_patron = Mock(return_value=True)
         self.assertIsNone(self.lib.borrow_book('learning python', patron))
         
     def test_return_book( self ):
