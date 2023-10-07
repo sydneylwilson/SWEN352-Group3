@@ -56,16 +56,14 @@ class TestLibrary( unittest.TestCase ):
     #     self.lib.api.get_ebooks = Mock(return_value=self.books_data)
     #     self.assertTrue(self.lib.is_book_by_author('Wei-Meng Lee', 'Python Machine Learning'))
     
-    def test_book_by_author_true(self):
-        """
-        Test method for is_book_by_author and getting a true.
-        """
-        book = Mock()
-        book.get_title = Mock(return_value='learning python')
-        book.get_author = Mock(return_value='Mark Lutz')
-        self.lib.api.get_ebooks = Mock(return_value=book)
-        self.assertTrue(self.lib.is_book_by_author('Mark Lutz', 'Learning Python'))
     
+    def test_is_book_by_author_returns_true_if_book_is_written_by_author(self):
+        author = 'J.K. Rowling'
+        book = 'Harry Potter and the Philosopher\'s Stone'
+        self.lib.api.books_by_author = Mock(return_value=['Harry Potter and the Philosopher\'s Stone', 'Harry Potter and the Chamber of Secrets'])
+        self.assertTrue(self.lib.is_book_by_author(author, book))
+
+        
     def test_is_book_by_author_false(self):
         """
         Test method for is_book_by_author and getting a false.
@@ -143,6 +141,15 @@ class TestLibrary( unittest.TestCase ):
         self.lib.db.retrieve_patron = Mock(return_value=patron)
         self.lib.db.update_patron = Mock(return_value=True)
         self.assertIsNone(self.lib.return_borrowed_book('learning python', patron))
+        
+    def test_return_book_fail( self ):
+        """
+        Test method for return_book and getting a incorrect set.
+        """
+        patron = Mock()
+        self.lib.db.retrieve_patron = Mock(return_value=patron)
+        self.lib.db.update_patron = Mock(return_value=False)
+        self.assertIsNone(self.lib.return_borrowed_book('learning python', patron))
     
     def test_is_book_borrowed( self ):
         """
@@ -151,6 +158,14 @@ class TestLibrary( unittest.TestCase ):
         patron = Mock()
         patron.get_borrowed_books = Mock(return_value=['learning python'])
         self.assertTrue(self.lib.is_book_borrowed('learning python', patron))
+        
+    def test_is_book_borrowed_false( self ):
+        """
+        Test method for is_book_borrowed and getting a incorrect set.
+        """
+        patron = Mock()
+        patron.get_borrowed_books = Mock(return_value=[])
+        self.assertFalse(self.lib.is_book_borrowed('learning python', patron))
     
 if __name__ == '__main__':
     unittest.main()
