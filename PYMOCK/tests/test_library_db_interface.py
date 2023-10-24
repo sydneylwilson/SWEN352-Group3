@@ -25,11 +25,11 @@ class TestLibraryDBInterface(unittest.TestCase):
         result = self.db_interface.insert_patron(patron_mock)
         self.assertIsNone(result)
     
-    # def test_get_patron_count(self):
-    #     self.assertEqual(self.db_interface.get_patron_count(), 1)
+    def test_get_patron_count(self):
+        self.assertEqual(self.db_interface.get_patron_count(), 3)
     
-    # def test_get_all_patrons(self):
-    #     self.assertEqual(len(self.db_interface.get_all_patrons()), 1)
+    def test_get_all_patrons(self):
+        self.assertEqual(len(self.db_interface.get_all_patrons()), 3)
     
     def test_update_patron(self):
         data = {'fname':'Jeff', 'lname':'Smith', 'age':'25', 'memberID':'2', 'borrowed_books':[]}
