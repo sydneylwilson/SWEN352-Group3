@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\mroja\RIT\SWEN-352\PYMOCK\virtualenv
+set VIRTUAL_ENV=C:\Users\swils\Fall2023\SWEN352\activity3\SWEN352-Group3\PYMOCK\virtualenv
 
 if not defined PROMPT set PROMPT=$P$G
 
