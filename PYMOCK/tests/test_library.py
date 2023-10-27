@@ -167,5 +167,42 @@ class TestLibrary( unittest.TestCase ):
         patron.get_borrowed_books = Mock(return_value=[])
         self.assertFalse(self.lib.is_book_borrowed('learning python', patron))
     
+    #########################################################################
+    ############################## MUTMUT ###################################
+    #########################################################################
+    
+    def test_library_init_bounds( self ):
+        """
+        Test method library init mutants
+        """
+        lib = library.Library()
+        self.assertIsNotNone(lib.db)
+    
+    def test_is_book_by_author_bounds( self ):
+        """
+        Test method for is_book_by_author mutants
+        """
+        author = 'J.K. Rowling'
+        book = 'Harry Potter and the Philosopher\'s Stone'
+        self.lib.api.books_by_author = Mock(return_value=['Harry Potter and the Philosopher\'s Stone', 'Harry Potter and the Chamber of Secrets'])
+        self.assertFalse(self.lib.is_book_by_author(book, 'Paul'))
+        
+    def test_language_book_bounds( self ):
+        """
+        for book in books_info:
+-           if 'language' in book:
++           if 'XXlanguageXX' in book:
+                lang_set.update(book['language'])
+        return lang_set
+        """
+        self.lib.api.get_book_info = Mock(return_value=[{'language': 'eng'}, {'language': 'spa'}])
+        self.assertEqual(self.lib.get_languages_for_book('learning python'), {'p','g','e','a','s','n'})
+        
+    def test_register_patron_bounds( self ):
+        """
+        Test register patron but the patron object gets set to None which causes a NoneType error.
+        """
+        self.assertRaises(TypeError, self.lib.register_patron, None, None, None, '123')
+        
 if __name__ == '__main__':
     unittest.main()
