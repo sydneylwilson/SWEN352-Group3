@@ -93,3 +93,39 @@ class TestExtApiInterface(unittest.TestCase):
     def test_get_ebooks(self):
         self.api.make_request = Mock(return_value=self.json_data)
         self.assertEqual(self.api.get_ebooks(self.book), self.books_data)
+    
+    #########################################################################
+    ############################## MUTMUT ###################################
+    #########################################################################
+
+    def test_is_book_available_bounds( self ):
+        """
+        Test method for book availability and getting a true.
+        """
+        self.api.make_request = Mock(return_value={'docs': [{'title': 'Learning Python', 'author': 'Mark Lutz', 'publisher': 'O\'Reilly'}]})
+        result = self.api.is_book_available('Learning Python')
+        self.assertTrue(result)
+        
+        self.api.make_request = Mock(return_value={'docs': []})
+        result = self.api.get_book_info('Non-existent Book')
+        self.assertFalse(result)
+        
+    def test_books_by_author_bounds( self ):
+        """
+        Ivan Rojas was here
+        """
+        self.api.make_request = Mock(return_value=None)
+        result = self.api.books_by_author('Non-existent Author')
+        self.assertEqual(result, [])
+    
+    def test_get_book_info_bounds( self ):
+        """
+        Ivan Rojas was here
+        """
+        self.api.make_request = Mock(return_value=None)
+        result = self.api.get_book_info('Non-existent Book')
+        self.assertEqual(result, [])
+        
+        self.api.make_request = Mock(return_value = {'docs': [{'title': 'Learning Python', 'publisher': 'O\'Reilly Media', 'publish_year': '2013', 'language': 'en'}, {'title': 'Python for Data Science Handbook', 'publisher': 'O\'Reilly Media', 'publish_year': '2016', 'language': 'en'}]})
+        result = self.api.get_book_info('Python')
+        self.assertEqual(result, [{'title': 'Learning Python', 'publisher': 'O\'Reilly Media', 'publish_year': '2013', 'language': 'en'}, {'title': 'Python for Data Science Handbook', 'publisher': 'O\'Reilly Media', 'publish_year': '2016', 'language': 'en'}])
