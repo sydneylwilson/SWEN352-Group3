@@ -1,5 +1,7 @@
 import unittest;
-from library import patron;
+from unittest.mock import Mock
+from library import patron
+import library
 
 class TestPatron(unittest.TestCase):
 
@@ -64,3 +66,41 @@ class TestPatron(unittest.TestCase):
         name = self.pat.get_memberID();
         self.assertEqual(name, '1234');
     
+    #########################################################################
+    ############################## MUTMUT ###################################
+    #########################################################################
+    
+    def test_init_bounds( self ):
+        """
+        Mutant 117
+-        if re.search('\d', fname) or re.search('\d', lname):
++        if re.search('XX\dXX', fname) or re.search('\d', lname):
+             raise InvalidNameException("Name should not contain numbers")
+         self.fname = fname
+         self.lname = lname
+        """
+        with self.assertRaises(patron.InvalidNameException):
+            paul = Mock(return_value=patron.Patron('1234', None, '20', '1234'))
+            paul2 = Mock(return_value=patron.Patron(None, '1234', '20', '1234'))
+            paul4 = Mock(return_value=patron.Patron('Sam', '1234', '20', '1234'))
+            paul5 = Mock(return_value=patron.Patron('Sam', None, '20', '1234'))
+            
+    def test_init_bounds2( self ):
+        """
+        Mutant 118
+        """
+        with self.assertRaises(patron.InvalidNameException):
+            paul4 = Mock(return_value=patron.Patron('Sam', '1234', '20', '1234'))
+            
+    def test_init_bounds3( self ):
+        """
+        Mutant 120
+        if re.search('\d', fname) or re.search('\d', lname):
+-            raise InvalidNameException("Name should not contain numbers")
++            raise InvalidNameException("XXName should not contain numbersXX")
+         self.fname = fname
+         self.lname = lname
+         self.age = age
+        """
+        
+        # have to break the re.search to get this to work without getting a InvalidNameException somehow
