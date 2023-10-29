@@ -101,7 +101,16 @@ class TestLibraryDBInterface(unittest.TestCase):
         result = self.db_interface.update_patron(patron)
         self.assertIsNone(result)
         mock_convert_patron_to_db_format.assert_called_once_with(patron)     
-        
     
-    
+    @patch.object(Library_DB, 'retrieve_patron', return_value=[{'fname': 'John', 'lname': 'Doe', 'age': 30, 'memberID': '12345'}, {'fname': 'Jane', 'lname': 'Doe', 'age': 25, 'memberID': '67890'}])
+    def test_retrieve_patron_with_mutant_106(self, mock_retrieve_patron):
+        # Test the retrieve_patron() method with Mutant 106
+        memberID = '12345'
+        result = self.db_interface.retrieve_patron(memberID)
+        self.assertIsInstance(result, list)
+        self.assertEqual(result[0].get('fname'), 'John')
+        self.assertEqual(result[0].get('lname'), 'Doe')
+        self.assertEqual(result[0].get('age'), 30)
+        self.assertEqual(result[0].get('memberID'), '12345')
+
     
