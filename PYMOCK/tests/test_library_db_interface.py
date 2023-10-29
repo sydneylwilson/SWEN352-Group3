@@ -43,7 +43,7 @@ class TestLibraryDBInterface(unittest.TestCase):
         self.db_interface.convert_patron_to_db_format = Mock()
         result = self.db_interface.update_patron(None)
         self.assertIsNone(result)
-    
+
     def test_retrieve_patron(self):
         retrieve_patron_mock = Mock()
         data = {'fname': 'Jeff', 'lname': 'Smith', 'age': '25', 'memberID': '2', 'borrowed_books': []}
