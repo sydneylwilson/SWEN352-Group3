@@ -102,5 +102,8 @@ class TestPatron(unittest.TestCase):
          self.lname = lname
          self.age = age
         """
-        
+        with self.assertRaises(patron.InvalidNameException) as E:
+            paul = Mock(return_value=patron.Patron('héllo 123', 'Dude', '20', '1234'))
+            raise patron.InvalidNameException("XXName should not contain numbersXX")
+        self.assertNotEqual(str(E.exception), "XXName should not contain numbersXX")
         # have to break the re.search to get this to work without getting a InvalidNameException somehow

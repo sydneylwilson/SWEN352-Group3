@@ -1,6 +1,6 @@
 import unittest
 from library import ext_api_interface
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 import requests
 import json
 
@@ -129,3 +129,60 @@ class TestExtApiInterface(unittest.TestCase):
         self.api.make_request = Mock(return_value = {'docs': [{'title': 'Learning Python', 'publisher': 'O\'Reilly Media', 'publish_year': '2013', 'language': 'en'}, {'title': 'Python for Data Science Handbook', 'publisher': 'O\'Reilly Media', 'publish_year': '2016', 'language': 'en'}]})
         result = self.api.get_book_info('Python')
         self.assertEqual(result, [{'title': 'Learning Python', 'publisher': 'O\'Reilly Media', 'publish_year': '2013', 'language': 'en'}, {'title': 'Python for Data Science Handbook', 'publisher': 'O\'Reilly Media', 'publish_year': '2016', 'language': 'en'}])
+
+    @patch.object(ext_api_interface.Books_API, 'make_request', return_value=None)
+    def test_mutant_16( self, mock_make_request ):
+        """ 
+        Mutant 16
+         :returns: the titles of all the books in a list form
+         request_url = "%s?author=%s" % (self.API_URL, author)
+-        json_data = self.make_request(request_url)
++        json_data = None
+         if not json_data:
+             return []
+         books = []
+        """
+        author = 'J.K. Rowling'
+        result = self.api.books_by_author(author)
+        self.assertEqual(result, [])
+        mock_make_request.assert_called_once_with("%s?author=%s" % (self.api.API_URL, author))
+        
+    @patch.object(ext_api_interface.Books_API, 'make_request', return_value=None)
+    def test_get_book_info_with_mutant_24(self, mock_make_request):
+        """ 
+        Mutant 24
+        """
+        book = 'Harry Potter'
+        result = self.api.get_book_info(book)
+        self.assertEqual(result, [])
+        mock_make_request.assert_called_once_with("%s?q=%s" % (self.api.API_URL, book))
+        
+    @patch.object(ext_api_interface.Books_API, 'make_request', return_value=None)
+    def test_get_ebooks_with_mutant_46(self, mock_make_request):
+        """ 
+        Mutant 46
+        """
+        book = 'Harry Potter'
+        result = self.api.get_ebooks(book)
+        self.assertEqual(result, [])
+        mock_make_request.assert_called_once_with("%s?q=%s" % (self.api.API_URL, book))
+        
+    @patch.object(ext_api_interface.Books_API, 'make_request', return_value=None)
+    def test_api_url_with_mutant_137(self, mock_make_request):
+        """ 
+        Mutant 137
+        """
+        self.assertEqual(self.api.API_URL, "http://openlibrary.org/search.json")
+
+    @patch.object(ext_api_interface.Books_API, 'make_request', return_value={'docs': []})
+    def test_is_book_available_with_mutant_139(self, mock_make_request):
+        """ 
+        Mutant 139
+        """
+        book = 'Harry Potter'
+        result = self.api.is_book_available(book)
+        self.assertFalse(result)
+        mock_make_request.assert_called_once_with("%s?q=%s" % (self.api.API_URL, book))
+
+
+
