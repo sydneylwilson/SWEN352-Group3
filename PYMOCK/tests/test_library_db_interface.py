@@ -1,7 +1,8 @@
 import unittest
 from library.library_db_interface import *
 # from tests_data import *
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, patch
+from tinydb import TinyDB, Query
 
 class TestLibraryDBInterface(unittest.TestCase):
     def setUp(self):
@@ -102,15 +103,51 @@ class TestLibraryDBInterface(unittest.TestCase):
         self.assertIsNone(result)
         mock_convert_patron_to_db_format.assert_called_once_with(patron)     
     
-    @patch.object(Library_DB, 'retrieve_patron', return_value=[{'fname': 'John', 'lname': 'Doe', 'age': 30, 'memberID': '12345'}, {'fname': 'Jane', 'lname': 'Doe', 'age': 25, 'memberID': '67890'}])
-    def test_retrieve_patron_with_mutant_106(self, mock_retrieve_patron):
-        # Test the retrieve_patron() method with Mutant 106
+    def test_retrieve_patron_bounds(self):
+        """
+        Mutant 103
+        query = Query()
+         # assuming no two people in the db have the same memberID
+-        results = self.db.search(query.memberID == memberID)
++        results = None
+         if results:
+             return Patron(results[0]['fname'], results[0]['lname'], results[0]['age'],
+             results[0]['memberID'])
+             
+        really hated this one
+            Ivan Rojas
+        """
         memberID = '12345'
-        result = self.db_interface.retrieve_patron(memberID)
-        self.assertIsInstance(result, list)
-        self.assertEqual(result[0].get('fname'), 'John')
-        self.assertEqual(result[0].get('lname'), 'Doe')
-        self.assertEqual(result[0].get('age'), 30)
-        self.assertEqual(result[0].get('memberID'), '12345')
 
-    
+        # Test the case where there are no results
+        self.db_interface.db.search = Mock(return_value = [])
+        result = self.db_interface.retrieve_patron(memberID)
+        self.assertIsNone(result)
+        self.db_interface.db.search.assert_called_once_with(Query().memberID == memberID)
+
+        # Test the case where there is one result
+        self.db_interface.db.search.return_value = [{'fname': 'John', 'lname': 'Doe', 'age': 30, 'memberID': '12345'}]
+        result = self.db_interface.retrieve_patron(memberID)
+        self.assertIsInstance(result, Patron)
+        self.assertEqual(result.fname, 'John')
+        self.assertEqual(result.lname, 'Doe')
+        self.assertEqual(result.age, 30)
+        self.assertEqual(result.memberID, '12345')
+        self.db_interface.db.search.assert_called_with(Query().memberID == memberID)
+
+        # Test the case where there are multiple results
+        self.db_interface.db.search.return_value = [{'fname': 'John', 'lname': 'Doe', 'age': 30, 'memberID': '12345'},
+                                             {'fname': 'Jane', 'lname': 'Doe', 'age': 25, 'memberID': '12345'}]
+        result = self.db_interface.retrieve_patron(memberID)
+        self.assertIsInstance(result, Patron)
+        self.assertEqual(result.fname, 'John')
+        self.assertEqual(result.lname, 'Doe')
+        self.assertEqual(result.age, 30)
+        self.assertEqual(result.memberID, '12345')
+        self.db_interface.db.search.assert_called_with(Query().memberID == memberID)
+
+        # Test the case where memberID is None
+        result = self.db_interface.retrieve_patron(None)
+        self.assertIsNotNone(result)
+        
+        
